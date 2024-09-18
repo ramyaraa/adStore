@@ -1,0 +1,9 @@
+/env
+
+
+
+.vscode/
+
+
+# Ignore other temporary or unnecessary files
+.DS_Store

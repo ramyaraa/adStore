@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+    <title>MK store</title>
+  </head>
+  <body>
+    <div class="main-container">
+      <header>
+        <nav>
+          <div class="nav-left">
+            <img src="{% static 'images/icons/main-logo.svg' %}" alt="" />
+          </div>
+          <div class="nav-right">
+            <div class="nav-icon">
+              <img src="{% static 'images/icons/home.svg' %}" alt="" />
+              <a href="#">home</a>
+            </div>
+            <div class="nav-icon">
+              <img src="{% static 'images/icons/logout.svg' %}" alt="" />
+              <a href="#">logout</a>
+            </div>
+            <div class="nav-icon">
+              <img src="{% static 'images/icons/line.svg' %}" alt="" />
+              <img src="{% static 'images/icons/logo.svg' %}" alt="" />
+            </div>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <section class="add-section"></section>
+        <section class="hero-section">
+          <div class="upper-container">
+            <h1>Learn for free<br> grap these udemy courses Today!</h1>
+            <div class="catagory">
+              <a href="#">View All</a>
+              <a href="#">IT/Engineering</a>
+              <a href="#">Marketing</a>
+              <a href="#">Design</a>
+              <a href="#">info</a>
+            </div>
+          </div>
+          <div class="lower-container">
+            <div class="horezantl-ad"></div>
+            {% for course in page_obj %}
+            <div class="cart">
+              <div class="box-img">
+                <img  src="{{ course.image_link }}" alt="{{ course.title }}">
+              </div>
+                <div class="box-handel">
+                    <div class="cart-h1">{{ course.title|slice:":40" }}</div>
+                    <div class="cart-h2">
+                        <div class="cart-catagory">{{ course.category }}</div>
+                        <div class="price">{{ course.original_price }}</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-all">
+                            <img src="{% static 'images/icons/tag-icon.svg' %}" />
+                            <p>Free</p>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                      <div class="info-all">
+                        <img src="{% static 'images/icons/layers-icon.svg' %}" />
+                        <p>{{ course.language }}</p>
+                      </div>
+                    </div>
+                    <div class="info-box">
+                      <div class="info-all">
+                        <img src="{% static 'images/icons/cartoon-icon.svg' %}" />
+                        <p>{{  course.created_at|timesince}} ago</p>
+                      </div>
+                    </div>
+                    <a href="{{ course.course_link }}" class="btn-enroll">Enroll</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No courses available.</p>
+        {% endfor %}
+    
+        <div class="horezantl-ad"></div>
+<!-- Pagination Controls -->
+<div class="pagination">
+  {% if page_obj.has_previous %}
+  <i class="unactive extra"> <a href="?page=1">&laquo; First</a></i>
+  <i class="unactive extra "> <a href="?page={{ page_obj.previous_page_number }}">Previous</a></i>
+  {% endif %}
+
+  <!-- Display the current page and pages around it -->
+  {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+          <strong class="active">{{ num }}</strong>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <i class="unactive"><a href="?page={{ num }}">{{ num }}</a></i>
+      {% endif %}
+  {% endfor %}
+
+  {% if page_obj.has_next %}
+  <i class="unactive extra"> <a href="?page={{ page_obj.next_page_number }}">Next</a></i>
+    <i class="unactive extra"> <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></i>
+  {% endif %}
+</div>
+        </section>
+        <section class="add-section"></section>
+      </main>
+    </div>
+  </body>
+</html>
+
